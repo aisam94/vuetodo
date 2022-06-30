@@ -156,7 +156,7 @@ export default {
   font-size: 0.875rem;
   background: #eee;
   margin: 0 0 0 0.5rem;
-  height: 1rem;
+  /* height: 1rem; */
   border-radius: 100px;
   transition: all 0.1s ease-out;
   color: rgba(0, 0, 0, 0.5);
