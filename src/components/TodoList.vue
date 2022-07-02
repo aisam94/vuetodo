@@ -1,3 +1,56 @@
+<template>
+  <div id="todo-list">
+    <!-- New todo list input -->
+    <div id="new-todo-list-item">
+      <input
+        type="text"
+        placeholder="Add a new item.."
+        id="new-todo-list-item-input"
+        @keyup="updateItemText"
+      />
+      <input
+        type="submit"
+        id="new-todo-list-item-submit"
+        @click="newItem"
+        value="Add Todo Item"
+      />
+    </div>
+
+    <!-- Item itself -->
+    <div class="list-item" v-for="item in store.todos" :key="item.id">
+      <div
+        class="list-item-holder"
+        v-if="item.location == location"
+        :data-status="item.completed"
+      >
+        <div class="checkbox-items" :data-status="item.completed">
+          <input
+            type="checkbox"
+            :data-id="item.id"
+            :id="item.id"
+            @click="updateTodo"
+            :checked="item.completed"
+          />
+          <label :data-id="item.id" :for="item.id">{{ item.name }}</label>
+        </div>
+        <div class="item-options">
+          <div class="delete-item" @click="deleteItem" :data-id="item.id">
+            Delete
+          </div>
+          <div
+            class="archive-item"
+            v-if="item.location !== 'archive'"
+            @click="archiveItem"
+            :data-id="item.id"
+          >
+            Archive
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 import { v4 as uuidv4 } from "uuid";
 import { useTodoStore } from "../main";
@@ -75,59 +128,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div id="todo-list">
-    <!-- New todo list input -->
-    <div id="new-todo-list-item">
-      <input
-        type="text"
-        placeholder="Add a new item.."
-        id="new-todo-list-item-input"
-        @keyup="updateItemText"
-      />
-      <input
-        type="submit"
-        id="new-todo-list-item-submit"
-        @click="newItem"
-        value="Add Todo Item"
-      />
-    </div>
-
-    <!-- Item itself -->
-    <div class="list-item" v-for="item in store.todos" :key="item.id">
-      <div
-        class="list-item-holder"
-        v-if="item.location == location"
-        :data-status="item.completed"
-      >
-        <div class="checkbox-items" :data-status="item.completed">
-          <input
-            type="checkbox"
-            :data-id="item.id"
-            :id="item.id"
-            @click="updateTodo"
-            :checked="item.completed"
-          />
-          <label :data-id="item.id" :for="item.id">{{ item.name }}</label>
-        </div>
-        <div class="item-options">
-          <div class="delete-item" @click="deleteItem" :data-id="item.id">
-            Delete
-          </div>
-          <div
-            class="archive-item"
-            v-if="item.location !== 'archive'"
-            @click="archiveItem"
-            :data-id="item.id"
-          >
-            Archive
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 #todo-list {
