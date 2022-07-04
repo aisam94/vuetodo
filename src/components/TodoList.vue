@@ -18,7 +18,7 @@
     </div>
 
     <!-- Item itself -->
-    <div class="list-item" v-for="item in store.todos" :key="item.id">
+    <div class="list-item" v-for="item in todos" :key="item.id">
       <div
         class="list-item-holder"
         v-if="item.location == location"
@@ -61,7 +61,7 @@ export default {
   name: "TodoList",
   setup() {
     const store = useStore();
-    return { store };
+    return { todos: store.getters.getTodoList };
   },
   data() {
     return {
@@ -87,7 +87,7 @@ export default {
 
       //update item at store
       // this.store.updateTodo(updatedItem);
-      store.commit.updateTodo(updatedItem);
+      this.$store.commit("updateTodo", updatedItem);
     },
 
     //UPDATE ITEM TEXT
@@ -109,7 +109,7 @@ export default {
     //DELETE ITEM
     deleteItem: function (e) {
       const deletedItem = { id: e.currentTarget.getAttribute("data-id") };
-      store.commit.deleteTodo(deletedItem);
+      this.$store.commit("deleteTodo", deletedItem);
     },
 
     //ADD NEW ITEM
@@ -122,7 +122,7 @@ export default {
           completed: false,
           location: this.location,
         };
-        store.commit.addTodo(newItem);
+        this.$store.commit("addTodo", newItem);
         this.resetItemText();
       }
     },
@@ -134,7 +134,7 @@ export default {
         id: e.currentTarget.getAttribute("data-id"),
         location: "archive",
       };
-      this.store.moveTodoItem(archiveItem);
+      this.$store.commit("moveTodoItem", archiveItem);
     },
   },
 };

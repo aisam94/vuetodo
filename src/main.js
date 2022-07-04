@@ -9,7 +9,14 @@ app.use(router);
 const store = createStore({
   state() {
     return {
-      todos: [],
+      todos: [
+        {
+          id: "first item",
+          name: "fist tiem",
+          completed: false,
+          location: "home",
+        },
+      ],
     };
   },
   getters: {
@@ -24,19 +31,20 @@ const store = createStore({
       if (localStorage.getItem("store")) {
         try {
           const todoObj = JSON.parse(localStorage.getItem("store"));
-          this.todos = todoObj.todos;
+          // this.todos = todoObj.todos;
+          this.replaceState(todoObj);
         } catch (error) {
           console.log("Cant initialize store.", error);
         }
       }
     },
     //update todo item
-    updateTodo(todoItem) {
+    updateTodo(state, todoItem) {
       const id = todoItem.id;
       const completed = todoItem.completed;
       const name = todoItem.name;
 
-      let findItem = this.todos.find((item) => item.id === id);
+      let findItem = state.todos.find((item) => item.id === id);
       if (findItem) {
         if (completed) {
           findItem.completed = completed;
@@ -49,31 +57,36 @@ const store = createStore({
       }
     },
     //add todo item
-    addTodo(todoItem) {
-      if (todoItem.id && todoItem.name && todoItem.completed) {
+    addTodo(state, todoItem) {
+      if (
+        todoItem.id !== undefined &&
+        typeof todoItem.name == "string" &&
+        typeof todoItem.completed == "boolean"
+      ) {
+        console.log("ass");
         const item = {
           id: todoItem.id,
           name: todoItem.name,
           completed: todoItem.completed,
           location: todoItem.location,
         };
-        this.todos.push(item);
+        state.todos.push(item);
       }
     },
     //delete todo item
-    deleteTodo(todoItem) {
+    deleteTodo(state, todoItem) {
       const id = todoItem.id;
-      const removedItem = this.todos.findIndex((item) => item.id === id);
+      const removedItem = state.todos.findIndex((item) => item.id === id);
       if (removedItem) {
-        this.todo.splice(removedItem, 1);
+        state.todo.splice(removedItem, 1);
       }
     },
     //move todo item
-    moveTodoItem(todoItem) {
+    moveTodoItem(state, todoItem) {
       const id = todoItem.id;
       const location = todoItem.location;
 
-      let findItem = this.todos.find((item) => item.id === id);
+      let findItem = state.todos.find((item) => item.id === id);
 
       if (findItem) {
         findItem.location = location;
@@ -91,7 +104,9 @@ const store = createStore({
 // });
 
 store.subscribe((mutation, state) => {
+  console.log("mutation type");
   console.log(mutation.type);
+  console.log("mutation payload");
   console.log(mutation.payload);
   console.log(state);
 
