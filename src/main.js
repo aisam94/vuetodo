@@ -54,6 +54,7 @@ const store = createStore({
           id: todoItem.id,
           name: todoItem.name,
           completed: todoItem.completed,
+          location: todoItem.location,
         };
       }
     },
@@ -62,3 +63,11 @@ const store = createStore({
     //
   },
 });
+
+useTodoStore().$subscribe((mutation, state) => {
+  //code trigger anytime mutation occurs
+  //stringify entire state obj and put it in localStorage so data will persist via page refresh
+  localStorage.setItem("store", JSON.stringify(state));
+});
+
+app.mount("#app");

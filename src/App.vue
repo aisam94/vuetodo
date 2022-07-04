@@ -1,3 +1,14 @@
+<template>
+  <main>
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+      <router-link to="/archive">Archive</router-link>
+      <router-link to="/about">About</router-link>
+    </div>
+    <router-view />
+  </main>
+</template>
+
 <script>
 import { useTodoStore } from "./main";
 
@@ -9,17 +20,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <main>
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/archive">Archive</router-link>
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </main>
-</template>
 
 <style>
 #app {
