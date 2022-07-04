@@ -54,7 +54,6 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-// import { useTodoStore } from "../main";
 import { useStore } from "vuex";
 
 export default {
@@ -76,7 +75,7 @@ export default {
     //UPDATE TODO ITEM
     updateTodo: function (e) {
       const newStatus =
-        e.currentTarget.parentElement.getAttribute("data-status") == "true"
+        e.currentTarget.parentElement.getAttribute("data-status") === "true"
           ? false
           : true;
 
@@ -86,7 +85,6 @@ export default {
       };
 
       //update item at store
-      // this.store.updateTodo(updatedItem);
       this.$store.commit("updateTodo", updatedItem);
     },
 

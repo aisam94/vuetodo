@@ -4,19 +4,11 @@ import { createStore } from "vuex";
 import router from "./router";
 
 const app = createApp(App);
-app.use(router);
 
 const store = createStore({
   state() {
     return {
-      todos: [
-        {
-          id: "first item",
-          name: "fist tiem",
-          completed: false,
-          location: "home",
-        },
-      ],
+      todos: [],
     };
   },
   getters: {
@@ -27,12 +19,12 @@ const store = createStore({
   },
   mutations: {
     //Load store
-    loadStore() {
+    loadStore(state) {
       if (localStorage.getItem("store")) {
         try {
           const todoObj = JSON.parse(localStorage.getItem("store"));
-          // this.todos = todoObj.todos;
-          this.replaceState(todoObj);
+          state.todos = todoObj.todos;
+          // this.replaceState(todoObj);
         } catch (error) {
           console.log("Cant initialize store.", error);
         }
@@ -58,12 +50,7 @@ const store = createStore({
     },
     //add todo item
     addTodo(state, todoItem) {
-      if (
-        todoItem.id !== undefined &&
-        typeof todoItem.name == "string" &&
-        typeof todoItem.completed == "boolean"
-      ) {
-        console.log("ass");
+      if (todoItem.id && todoItem.name) {
         const item = {
           id: todoItem.id,
           name: todoItem.name,
@@ -77,8 +64,11 @@ const store = createStore({
     deleteTodo(state, todoItem) {
       const id = todoItem.id;
       const removedItem = state.todos.findIndex((item) => item.id === id);
+      // const removedItem = state.todos.findIndex((item) => {
+      //   return item.id === id;
+      // });
       if (removedItem) {
-        state.todo.splice(removedItem, 1);
+        state.todos.splice(removedItem, 1);
       }
     },
     //move todo item
@@ -97,21 +87,10 @@ const store = createStore({
   },
 });
 
-// useTodoStore().$subscribe((mutation, state) => {
-//   //code trigger anytime mutation occurs
-//   //stringify entire state obj and put it in localStorage so data will persist via page refresh
-//   localStorage.setItem("store", JSON.stringify(state));
-// });
-
 store.subscribe((mutation, state) => {
-  console.log("mutation type");
-  console.log(mutation.type);
-  console.log("mutation payload");
-  console.log(mutation.payload);
-  console.log(state);
-
   localStorage.setItem("store", JSON.stringify(state));
 });
 
+app.use(router);
 app.use(store);
 app.mount("#app");

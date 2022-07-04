@@ -15,9 +15,7 @@ import { useStore } from "vuex";
 export default {
   beforeCreate() {
     //beforeCreate is called when instance initialized
-    // const store = useTodoStore();
     const store = useStore();
-    // store.loadStore();
     store.commit("loadStore");
   },
 };
