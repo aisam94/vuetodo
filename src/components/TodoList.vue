@@ -54,12 +54,13 @@
 
 <script>
 import { v4 as uuidv4 } from "uuid";
-import { useTodoStore } from "../main";
+// import { useTodoStore } from "../main";
+import { useStore } from "vuex";
 
 export default {
   name: "TodoList",
   setup() {
-    const store = useTodoStore();
+    const store = useStore();
     return { store };
   },
   data() {
@@ -85,7 +86,8 @@ export default {
       };
 
       //update item at store
-      this.store.updateTodo(updatedItem);
+      // this.store.updateTodo(updatedItem);
+      store.commit.updateTodo(updatedItem);
     },
 
     //UPDATE ITEM TEXT
@@ -107,7 +109,7 @@ export default {
     //DELETE ITEM
     deleteItem: function (e) {
       const deletedItem = { id: e.currentTarget.getAttribute("data-id") };
-      this.store.deleteTodo(deletedItem);
+      store.commit.deleteTodo(deletedItem);
     },
 
     //ADD NEW ITEM
@@ -120,7 +122,7 @@ export default {
           completed: false,
           location: this.location,
         };
-        this.store.addTodo(newItem);
+        store.commit.addTodo(newItem);
         this.resetItemText();
       }
     },

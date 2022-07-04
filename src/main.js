@@ -4,6 +4,7 @@ import { createStore } from "vuex";
 import router from "./router";
 
 const app = createApp(App);
+app.use(router);
 
 const store = createStore({
   state() {
@@ -56,18 +57,46 @@ const store = createStore({
           completed: todoItem.completed,
           location: todoItem.location,
         };
+        this.todos.push(item);
+      }
+    },
+    //delete todo item
+    deleteTodo(todoItem) {
+      const id = todoItem.id;
+      const removedItem = this.todos.findIndex((item) => item.id === id);
+      if (removedItem) {
+        this.todo.splice(removedItem, 1);
+      }
+    },
+    //move todo item
+    moveTodoItem(todoItem) {
+      const id = todoItem.id;
+      const location = todoItem.location;
+
+      let findItem = this.todos.find((item) => item.id === id);
+
+      if (findItem) {
+        findItem.location = location;
+      } else {
+        console.log(`Item ${id} cant be found.`);
       }
     },
   },
-  actions: {
-    //
-  },
 });
 
-useTodoStore().$subscribe((mutation, state) => {
-  //code trigger anytime mutation occurs
-  //stringify entire state obj and put it in localStorage so data will persist via page refresh
+// useTodoStore().$subscribe((mutation, state) => {
+//   //code trigger anytime mutation occurs
+//   //stringify entire state obj and put it in localStorage so data will persist via page refresh
+//   localStorage.setItem("store", JSON.stringify(state));
+// });
+
+store.subscribe((mutation, state) => {
+  console.log(mutation.type);
+  console.log(mutation.payload);
+  console.log(state);
+
   localStorage.setItem("store", JSON.stringify(state));
 });
 
+app.use(store);
 app.mount("#app");
