@@ -76,7 +76,7 @@ export const useTodoStore = defineStore("todo", {
           id: todoItem.id,
           name: todoItem.name,
           completed: todoItem.completed,
-          location: "home",
+          location: todoItem.location,
         };
         this.todos.push(item);
       }
@@ -111,7 +111,6 @@ useTodoStore().$subscribe((mutation, state) => {
   //code trigger anytime mutation occurs
   //stringify entire state obj and put it in localStorage so data will persist via page refresh
   localStorage.setItem("store", JSON.stringify(state));
-  console.log(state);
 });
 
 app.mount("#app");

@@ -7,6 +7,7 @@
         placeholder="Add a new item.."
         id="new-todo-list-item-input"
         @keyup="updateItemText"
+        :value="newTodoItem"
       />
       <input
         type="submit"
@@ -97,6 +98,12 @@ export default {
       return false;
     },
 
+    //RESET ITEM TEXT
+    resetItemText: function () {
+      this.newTodoItem = "";
+      return false;
+    },
+
     //DELETE ITEM
     deleteItem: function (e) {
       const deletedItem = { id: e.currentTarget.getAttribute("data-id") };
@@ -111,8 +118,10 @@ export default {
           id: uuidv4(),
           name: this.newTodoItem,
           completed: false,
+          location: this.location,
         };
         this.store.addTodo(newItem);
+        this.resetItemText();
       }
     },
 
